@@ -8,32 +8,37 @@
 
 #import "GetFiles.h"
 #import "CommonDefine.h"
+#import "FileNode.h"
 @implementation GetFiles
 #pragma mark ================ Interface =================
 
 /**
  非递归,返回指定路径下的所有文件名
- @param folder 指定路径
- @param error Error指针
  @return Null：没有文件 NSArray：指定路径下的文件,由外部释放
  */
--(NSArray*)getSubFilesInFolder:(NSString*)folder NSError:(NSError**)error{
+-(NSArray*)getSubFilesInFolder:(NSString*)folder WithDepth:(int)depth NSError:(NSError**)error{
     NSArray* arrTemp = [self getSubFiles:folder NSError:error];
+    NSMutableArray *arrNodes = [NSMutableArray new];
     for (int i = 0; i < arrTemp.count; i++) {
-        
+        FileNode *fileNode = [[FileNode alloc] initWithSimpleObject:[arrTemp objectAtIndex:i]  withDepth:depth];
+        [arrNodes addObject:fileNode];
     }
-    return arrTemp;
+    return arrNodes;
 }
 
 /**
  递归,返回指定路径下的所有文件名
- @param folder 指定路径
- @param error Error指针
  @return Null：没有文件 NSArray：指定路径下的文件,由外部释放
  */
--(NSArray*)getAllSubFilesInFolder:(NSString*)folder NSError:(NSError**)error{
-    return 0;
+-(NSArray*)getAllSubFilesInFolder:(FileNode*)root NSError:(NSError**)error{
+    if (root == nil || root.name == nil) {
+        return nil;
+    }
+    NSMutableArray *arrFiles = [NSMutableArray new];
+    NSArray *arrNodes = [self getSubFilesInFolder:root.name WithDepth:2 NSError:nil];
+    return nil;
 }
+
 #pragma mark ================ Private Funcs =================
 -(NSArray*)getSubFiles:(NSString*)folder NSError:(NSError**)error{
     NSFileManager *manager = [NSFileManager defaultManager];
@@ -48,6 +53,7 @@
     return 0;
 }
 
+-(void)delResNode{}
 /**
  
  

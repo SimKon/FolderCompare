@@ -18,6 +18,7 @@
         self.ownFolder          = nil;
         self.filePath           = nil;
         self.type               = UNKNOWTYPE;
+        self.fileKind           = FK_UNKNOW;
         self.subFilesCount      = 0;
         self.subFiles           = nil;
         self.depth              = 0;
@@ -33,13 +34,14 @@
 }
 
 // 返回只含有文件名和文件类型的对象
-- (id)initWithSimpleObject:(NSString*)fileName with:(int)depth{
+- (id)initWithSimpleObject:(NSString*)fileName withDepth:(int)depth{
     if ( self = [super init] ) {
         self.fileID             = 0;
         self.name               = fileName;
         self.ownFolder          = nil;
         self.filePath           = nil;
         self.type               = [self getFileType:fileName];
+        self.fileKind           = FK_UNKNOW;
         self.subFilesCount      = 0;
         self.subFiles           = nil;
         self.depth              = depth;

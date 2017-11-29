@@ -21,9 +21,15 @@ typedef enum _FileType {
     Doc = 21
 } FileType;
 
+typedef enum _FileKind {
+    FK_UNKNOW,
+    FK_FOLDER = 1,
+    FK_FILE = 2
+} FileKind;
 @interface FileNode : NSObject
 @property(assign,nonatomic) int         fileID;
-@property(retain,nonatomic) NSString*   name;
+@property(assign,nonatomic) int         fileKind;
+@property(retain,nonatomic) NSString*   name; // 完整的文件路径
 @property(retain,nonatomic) NSString*   ownFolder;
 @property(retain,nonatomic) NSString*   filePath;
 @property(assign,nonatomic) int         type;
@@ -38,4 +44,5 @@ typedef enum _FileType {
  */
 
 - (id)initWithBlankObject;
+- (id)initWithSimpleObject:(NSString*)fileName withDepth:(int)depth;
 @end

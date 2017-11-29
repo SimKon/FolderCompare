@@ -12,5 +12,4 @@ typedef enum _FCError {
     FC_NOERROR = 0,
     FC_ERR = 1
 } FCError;
-
 #endif /* CommonDefine_h */

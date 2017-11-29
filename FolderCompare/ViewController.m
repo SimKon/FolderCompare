@@ -17,7 +17,7 @@
 //    [GetFiles getSubFiles:&array InFolder:path];
     NSError *error = NULL;
     GetFiles *getFiles = [GetFiles new];
-    NSArray* files = [[getFiles getSubFilesInFolder:path NSError:&error] retain];
+    NSArray* files = [[getFiles getSubFilesInFolder:path WithDepth:0 NSError:&error] retain];
     [getFiles release];
     NSLog(@"111");
 }
