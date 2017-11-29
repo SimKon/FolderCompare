@@ -14,6 +14,7 @@
 		5E26378F1FB2E6F600CBCF5E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E26378D1FB2E6F600CBCF5E /* Main.storyboard */; };
 		5E26379E1FB2F66900CBCF5E /* CommonFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E26379D1FB2F66900CBCF5E /* CommonFunc.m */; };
 		5E2637A61FB2FFEA00CBCF5E /* GetFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E2637A51FB2FFEA00CBCF5E /* GetFiles.m */; };
+		5E3242661FCEA6C2005C8759 /* FileNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E3242651FCEA6C2005C8759 /* FileNode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,8 @@
 		5E26379D1FB2F66900CBCF5E /* CommonFunc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommonFunc.m; path = Common/CommonFunc.m; sourceTree = "<group>"; };
 		5E2637A41FB2FFEA00CBCF5E /* GetFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetFiles.h; path = Common/GetFiles.h; sourceTree = "<group>"; };
 		5E2637A51FB2FFEA00CBCF5E /* GetFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetFiles.m; path = Common/GetFiles.m; sourceTree = "<group>"; };
+		5E3242641FCEA6C2005C8759 /* FileNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FileNode.h; path = Common/FileNode.h; sourceTree = "<group>"; };
+		5E3242651FCEA6C2005C8759 /* FileNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FileNode.m; path = Common/FileNode.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +95,8 @@
 				5E26379D1FB2F66900CBCF5E /* CommonFunc.m */,
 				5E2637A41FB2FFEA00CBCF5E /* GetFiles.h */,
 				5E2637A51FB2FFEA00CBCF5E /* GetFiles.m */,
+				5E3242641FCEA6C2005C8759 /* FileNode.h */,
+				5E3242651FCEA6C2005C8759 /* FileNode.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 				5E26379E1FB2F66900CBCF5E /* CommonFunc.m in Sources */,
 				5E2637A61FB2FFEA00CBCF5E /* GetFiles.m in Sources */,
 				5E26378A1FB2E6F600CBCF5E /* ViewController.m in Sources */,
+				5E3242661FCEA6C2005C8759 /* FileNode.m in Sources */,
 				5E2637871FB2E6F600CBCF5E /* main.m in Sources */,
 				5E2637841FB2E6F600CBCF5E /* AppDelegate.m in Sources */,
 			);
@@ -320,6 +326,7 @@
 				5E2637951FB2E6F600CBCF5E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
