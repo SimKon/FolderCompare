@@ -7,55 +7,73 @@
 //
 
 #import "FileNode.h"
-
 @implementation FileNode
 #pragma mark ==================== Init Functions ======================
 // 返回初始化后的对象
 - (id)initWithBlankObject {
     if ( self = [super init] ) {
-        self.fileID             = 0;
+        self.fileID             = -1;
         self.name               = nil;
-        self.ownFolder          = nil;
-        self.filePath           = nil;
-        self.type               = UNKNOWTYPE;
-        self.fileKind           = FK_UNKNOW;
-        self.subFilesCount      = 0;
+        self.fullPath           = nil;
+        self.type               = FT_UNKNOW;
+        self.extension          = FE_UNKNOW;
+        self.subFilesCount      = -1;
         self.subFiles           = nil;
-        self.depth              = 0;
+        self.depth              = -1;
     }
     return self;
 }
 
-- (id)initWithFileName:(NSString*)fileName {
+- (id)initWithFullPath:(NSString*)filePath {
     if ( self = [super init] ) {
-        // 获取详细的信息
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+        self.fileID             = -1;
+        self.name               = [filePath lastPathComponent];
+        self.fullPath           = filePath;
+        if ([[attributes valueForKey:NSFileType] isEqualToString:NSFileTypeDirectory]) {
+            self.type           = FT_FOLDER;
+        } else {
+            self.type           = FT_FILE;
+        }
+        self.extension          = [self getFileType:filePath];
+        self.subFilesCount      = -1;
+        self.subFiles           = nil;
+        self.depth              = -1;
     }
     return self;
 }
 
 // 返回只含有文件名和文件类型的对象
-- (id)initWithSimpleObject:(NSString*)fileName withDepth:(int)depth{
+- (id)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth{
     if ( self = [super init] ) {
-        self.fileID             = 0;
-        self.name               = fileName;
-        self.ownFolder          = nil;
-        self.filePath           = nil;
-        self.type               = [self getFileType:fileName];
-        self.fileKind           = FK_UNKNOW;
-        self.subFilesCount      = 0;
+        self.fileID             = -1;
+        self.name               = [filePath lastPathComponent];
+        self.fullPath           = filePath;
+        self.extension          = [self getFileType:filePath];
+        self.type               = FT_UNKNOW;
+        self.subFilesCount      = -1;
         self.subFiles           = nil;
         self.depth              = depth;
     }
     return self;
 }
+#pragma mark ==================== Public Functions ======================
+-(void)addChildren:(NSArray*)children{
+    self.subFiles = children;
+    self.subFilesCount = (unsigned short)children.count;
+}
 
 #pragma mark ==================== Other Functions ======================
--(FileType)getFileType:(NSString*)fileName{
+-(FileExtension)getFileType:(NSString*)fileName{
     NSString* fileExtension = [[fileName pathExtension] uppercaseString];
+    //99
+    if (fileExtension == nil || [fileExtension isEqualToString:@""] ) {
+        return FE_NOEXTENSION;
+    }
     //1~9 Picture
     if ([fileExtension isEqualToString:@"JPG"] ||
         [fileExtension isEqualToString:@"JPEG"]) {
-        return JPEG;
+        return FE_JPEG;
     }
     if ([fileExtension isEqualToString:@"NEF"] || // Nikon
         [fileExtension isEqualToString:@"RAF"] || // Fujifilm
@@ -67,25 +85,25 @@
         [fileExtension isEqualToString:@"ORF"] || // Olympus
         [fileExtension isEqualToString:@"DNG"] || // Lecia&Ricoh
         [fileExtension isEqualToString:@"RAW"]) {
-        return RAW;
+        return FE_RAW;
     }
     if ([fileExtension isEqualToString:@"TIFF"] ) {
-        return TIFF;
+        return FE_TIFF;
     }
     //11~19 Movie
     if ([fileExtension isEqualToString:@"MP4"] ) {
-        return MP4;
+        return FE_MP4;
     }
     if ([fileExtension isEqualToString:@"RMVB"] ) {
-        return RMVB;
+        return FE_RMVB;
     }
-    //20+ Document
+    //20~40 Document
     if ([fileExtension isEqualToString:@"DOC"] ) {
-        return Doc;
+        return FE_DOC;
     }
     if ([fileExtension isEqualToString:@"PDF"] ) {
-        return PDF;
+        return FE_PDF;
     }
-    return UNKNOWTYPE;
+    return FE_UNKNOW;
 }
 @end

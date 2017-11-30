@@ -7,42 +7,46 @@
 //
 
 #import <Foundation/Foundation.h>
-typedef enum _FileType {
-    UNKNOWTYPE = 0,
+typedef enum _FileExtension {
+    FE_UNKNOW= 0,
     //1~9 Picture
-    JPEG  = 1,
-    RAW  = 2,
-    TIFF = 3,
+    FE_JPEG  = 1,
+    FE_RAW  = 2,
+    FE_TIFF = 3,
     //11~19 Movie
-    MP4 = 11,
-    RMVB = 12,
-    //20+ Document
-    PDF = 20,
-    Doc = 21
-} FileType;
+    FE_MP4 = 11,
+    FE_RMVB = 12,
+    //20~40 Document
+    FE_PDF = 20,
+    FE_DOC = 21,
+    //99
+    FE_NOEXTENSION = 99
+} FileExtension;
 
-typedef enum _FileKind {
-    FK_UNKNOW,
-    FK_FOLDER = 1,
-    FK_FILE = 2
-} FileKind;
+typedef enum _FileType {
+    FT_UNKNOW,
+    FT_FOLDER = 1,
+    FT_FILE = 2
+} FileType;
 @interface FileNode : NSObject
-@property(assign,nonatomic) int         fileID;
-@property(assign,nonatomic) int         fileKind;
-@property(retain,nonatomic) NSString*   name; // 完整的文件路径
-@property(retain,nonatomic) NSString*   ownFolder;
-@property(retain,nonatomic) NSString*   filePath;
-@property(assign,nonatomic) int         type;
-@property(assign,nonatomic) int         subFilesCount;
-@property(retain,nonatomic) NSArray*    subFiles;
-@property(assign,nonatomic) int         depth;
+@property(assign,nonatomic) int             fileID;
+@property(assign,nonatomic) int             extension;
+@property(retain,nonatomic) NSString*       name; // 文件名
+@property(retain,nonatomic) NSString*       fullPath; // 文件全路径
+@property(assign,nonatomic) int             type;
+@property(assign,nonatomic) unsigned short  subFilesCount;
+@property(retain,nonatomic) NSArray*        subFiles;
+@property(assign,nonatomic) int             depth;
+/* 等待追加
+ @property(assign,nonatomic) int         size;
+ */
 /*
- NSString*   prefixName;
- int         suffixName;
- NSString*   fullPath;
  扩展：camera、filmingTime、etc
  */
 
 - (id)initWithBlankObject;
-- (id)initWithSimpleObject:(NSString*)fileName withDepth:(int)depth;
+- (id)initWithFullPath:(NSString*)filePath;
+- (id)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth;
+
+- (void)addChildren:(NSArray*)children;
 @end

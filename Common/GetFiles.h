@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FileNode.h"
 @interface GetFiles : NSObject
--(NSArray*)getSubFilesInFolder:(NSString*)folder WithDepth:(int)depth NSError:(NSError**)error;
--(NSArray*)getAllSubFilesInFolder:(FileNode*)root NSError:(NSError**)error;
+//-(NSArray*)getSubFilesInFolder:(NSString*)folder WithDepth:(int)depth NSError:(NSError**)error;
+-(NSArray*)getAllSubFilesInFolder:(FileNode*)root error:(NSError**)error;
 
 //-(NSArray*)getSubFiles:(NSString*)folder NSError:(NSError**)error;
 //-(NSArray*)getAllSubFiles:(NSString*)folder NSError:(NSError**)error;

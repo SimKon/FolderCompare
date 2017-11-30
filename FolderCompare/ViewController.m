@@ -1,4 +1,4 @@
-//
+    //
 //  ViewController.m
 //  FolderCompare
 //
@@ -13,12 +13,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSString* path = @"/Users/shen_chao/Desktop/300To200";//此节点设为根节点
+    NSString* path = @"/Users/shen_chao/Desktop/300To2001";//此节点设为根节点
 //    [GetFiles getSubFiles:&array InFolder:path];
-    NSError *error = NULL;
-    GetFiles *getFiles = [GetFiles new];
-    NSArray* files = [[getFiles getSubFilesInFolder:path WithDepth:0 NSError:&error] retain];
-    [getFiles release];
+    FileNode *node = [[FileNode alloc] initWithFullPath:path];
+    GetFiles* files = [GetFiles new];
+    NSArray* arrFiles = [files getAllSubFilesInFolder:node error:nil];
+    [node addChildren:arrFiles];
     NSLog(@"111");
 }
 
