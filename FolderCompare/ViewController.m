@@ -14,7 +14,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSString* path = @"/Users/shen_chao/Desktop/300To2001";//此节点设为根节点
+    NSString* path = @"/Users/shen_chao/Desktop/300To200";//此节点设为根节点
     FileNode *node = [[FileNode alloc] initWithFullPath:path];
     GetFiles* files = [GetFiles new];
     NSArray* arrFiles = [files getAllSubFilesInFolder:node error:nil];

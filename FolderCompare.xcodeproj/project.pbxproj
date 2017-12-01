@@ -31,10 +31,10 @@
 		5E26379B1FB2F66900CBCF5E /* CommonDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommonDefine.h; path = Common/CommonDefine.h; sourceTree = "<group>"; };
 		5E26379C1FB2F66900CBCF5E /* CommonFunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommonFunc.h; path = Common/CommonFunc.h; sourceTree = "<group>"; };
 		5E26379D1FB2F66900CBCF5E /* CommonFunc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommonFunc.m; path = Common/CommonFunc.m; sourceTree = "<group>"; };
-		5E2637A41FB2FFEA00CBCF5E /* GetFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetFiles.h; path = Common/GetFiles.h; sourceTree = "<group>"; };
-		5E2637A51FB2FFEA00CBCF5E /* GetFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetFiles.m; path = Common/GetFiles.m; sourceTree = "<group>"; };
-		5E3242641FCEA6C2005C8759 /* FileNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FileNode.h; path = Common/FileNode.h; sourceTree = "<group>"; };
-		5E3242651FCEA6C2005C8759 /* FileNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FileNode.m; path = Common/FileNode.m; sourceTree = "<group>"; };
+		5E2637A41FB2FFEA00CBCF5E /* GetFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetFiles.h; sourceTree = "<group>"; };
+		5E2637A51FB2FFEA00CBCF5E /* GetFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetFiles.m; sourceTree = "<group>"; };
+		5E3242641FCEA6C2005C8759 /* FileNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileNode.h; sourceTree = "<group>"; };
+		5E3242651FCEA6C2005C8759 /* FileNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileNode.m; sourceTree = "<group>"; };
 		5E3242721FD0DE8A005C8759 /* FileTreeExport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTreeExport.h; sourceTree = "<group>"; };
 		5E3242731FD0DE8A005C8759 /* FileTreeExport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileTreeExport.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,6 +53,7 @@
 		5E2637761FB2E6F600CBCF5E = {
 			isa = PBXGroup;
 			children = (
+				5E3242751FD1460D005C8759 /* Structs */,
 				5E2637961FB2EF3E00CBCF5E /* Common */,
 				5E2637811FB2E6F600CBCF5E /* FolderCompare */,
 				5E2637801FB2E6F600CBCF5E /* Products */,
@@ -70,6 +71,8 @@
 		5E2637811FB2E6F600CBCF5E /* FolderCompare */ = {
 			isa = PBXGroup;
 			children = (
+				5E2637A41FB2FFEA00CBCF5E /* GetFiles.h */,
+				5E2637A51FB2FFEA00CBCF5E /* GetFiles.m */,
 				5E2637821FB2E6F600CBCF5E /* AppDelegate.h */,
 				5E2637831FB2E6F600CBCF5E /* AppDelegate.m */,
 				5E2637881FB2E6F600CBCF5E /* ViewController.h */,
@@ -98,12 +101,17 @@
 				5E26379B1FB2F66900CBCF5E /* CommonDefine.h */,
 				5E26379C1FB2F66900CBCF5E /* CommonFunc.h */,
 				5E26379D1FB2F66900CBCF5E /* CommonFunc.m */,
-				5E2637A41FB2FFEA00CBCF5E /* GetFiles.h */,
-				5E2637A51FB2FFEA00CBCF5E /* GetFiles.m */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		5E3242751FD1460D005C8759 /* Structs */ = {
+			isa = PBXGroup;
+			children = (
 				5E3242641FCEA6C2005C8759 /* FileNode.h */,
 				5E3242651FCEA6C2005C8759 /* FileNode.m */,
 			);
-			name = Common;
+			path = Structs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

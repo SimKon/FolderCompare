@@ -57,6 +57,7 @@ depth 0:root文件夹 1:root文件夹下的文件 2:依次类推。作为对外�
             //-- 子文件为文件夹 --//
             NSArray *arrChildren = [self getAllSubFilesInFolder:node error:nil];
 //            [arrChildren sortedArrayUsingSelector:@];
+            // TODO 排序 根据name
             node.subFiles = arrChildren;
             node.subFilesCount = (unsigned short)arrChildren.count;
         } else {
