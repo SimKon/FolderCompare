@@ -55,9 +55,10 @@ depth 0:root文件夹 1:root文件夹下的文件 2:依次类推。作为对外�
         FileNode *node = [arrFiles objectAtIndex:i];
         if (node.type == FT_FOLDER) {
             //-- 子文件为文件夹 --//
-            NSArray *arrChildrens = [self getAllSubFilesInFolder:node error:nil];
-            node.subFiles = arrChildrens;
-            node.subFilesCount = (unsigned short)arrChildrens.count;
+            NSArray *arrChildren = [self getAllSubFilesInFolder:node error:nil];
+//            [arrChildren sortedArrayUsingSelector:@];
+            node.subFiles = arrChildren;
+            node.subFilesCount = (unsigned short)arrChildren.count;
         } else {
             //-- 子文件为文件 --//
         }
@@ -65,6 +66,9 @@ depth 0:root文件夹 1:root文件夹下的文件 2:依次类推。作为对外�
     return arrFiles;
 }
 
+-(NSArray*)sortChildrenByName:(NSArray*)children{
+    return children;
+}
 -(void)delResNode{}
 
 #pragma mark ================ Private Funcs =================

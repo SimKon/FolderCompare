@@ -13,6 +13,9 @@ typedef enum _FCError {
     FC_ERR = 1
 } FCError;
 
+#define EXPORT_PREFIX_NAME @"FCResult"
+#define EXPORT_SUFFIX_NAME @".txt"
+#define EXPORT_DEPTH_MARK  @"|------ "
 // ----------- Skip Files -------------
 //#define SKIP_DS_Store = @".DS_Store"
 #define SKIP_FILES [NSArray arrayWithObjects:@".DS_Store", nil]

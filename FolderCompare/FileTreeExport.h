@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "FileNode.h"
 @interface FileTreeExport : NSObject
-@property(nonatomic,retain) NSString* exportPath;
-
+@property(nonatomic,retain) NSString*   exportPath;
+@property(nonatomic,assign) int         fileCount;
 -(instancetype)init;
 -(void)exportTree:(FileNode*)tree;
 @end
