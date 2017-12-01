@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FileNode.h"
 @interface GetFiles : NSObject
+@property(nonatomic,retain) NSFileManager* fileManager;
 //-(NSArray*)getSubFilesInFolder:(NSString*)folder WithDepth:(int)depth NSError:(NSError**)error;
 -(NSArray*)getAllSubFilesInFolder:(FileNode*)root error:(NSError**)error;
 

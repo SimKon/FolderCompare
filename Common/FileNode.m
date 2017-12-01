@@ -10,24 +10,26 @@
 @implementation FileNode
 #pragma mark ==================== Init Functions ======================
 // 返回初始化后的对象
-- (id)initWithBlankObject {
+- (instancetype)initWithBlankObject {
     if ( self = [super init] ) {
-        self.fileID             = -1;
+        self.fileID             = 0;
         self.name               = nil;
         self.fullPath           = nil;
         self.type               = FT_UNKNOW;
         self.extension          = FE_UNKNOW;
-        self.subFilesCount      = -1;
+        self.subFilesCount      = 0;
         self.subFiles           = nil;
         self.depth              = -1;
     }
     return self;
 }
 
-- (id)initWithFullPath:(NSString*)filePath {
+// 含有详细信息
+// !! 1.depth会被设置为0   2.效率比initWithSimpleObject慢15000多倍
+- (instancetype)initWithFullPath:(NSString*)filePath {
     if ( self = [super init] ) {
         NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
-        self.fileID             = -1;
+        self.fileID             = 0;
         self.name               = [filePath lastPathComponent];
         self.fullPath           = filePath;
         if ([[attributes valueForKey:NSFileType] isEqualToString:NSFileTypeDirectory]) {
@@ -35,23 +37,23 @@
         } else {
             self.type           = FT_FILE;
         }
-        self.extension          = [self getFileType:filePath];
-        self.subFilesCount      = -1;
+        self.extension          = [self getFileExtension:filePath];
+        self.subFilesCount      = 0;
         self.subFiles           = nil;
-        self.depth              = -1;
+        self.depth              = 0;
     }
     return self;
 }
 
-// 返回只含有文件名和文件类型的对象
-- (id)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth{
+// 含有从文件路径上能直接获取的信息 + 文件类型(Folder／File)
+- (instancetype)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth{
     if ( self = [super init] ) {
-        self.fileID             = -1;
+        self.fileID             = 0;
         self.name               = [filePath lastPathComponent];
         self.fullPath           = filePath;
-        self.extension          = [self getFileType:filePath];
-        self.type               = FT_UNKNOW;
-        self.subFilesCount      = -1;
+        self.extension          = [self getFileExtension:filePath];
+        self.type               = [self getFileType:filePath];
+        self.subFilesCount      = 0;
         self.subFiles           = nil;
         self.depth              = depth;
     }
@@ -64,7 +66,7 @@
 }
 
 #pragma mark ==================== Other Functions ======================
--(FileExtension)getFileType:(NSString*)fileName{
+-(FileExtension)getFileExtension:(NSString*)fileName{
     NSString* fileExtension = [[fileName pathExtension] uppercaseString];
     //99
     if (fileExtension == nil || [fileExtension isEqualToString:@""] ) {
@@ -105,5 +107,27 @@
         return FE_PDF;
     }
     return FE_UNKNOW;
+}
+
+-(FileType)getFileType:(NSString*)fullPath{
+    BOOL isDirectory = NO;
+    BOOL isExist = [self.fileManager fileExistsAtPath:fullPath isDirectory:&isDirectory];
+    if (!isExist) {
+        return FT_UNKNOW;
+    } else {
+        if (isDirectory) {
+            return FT_FOLDER;
+        } else {
+            return FT_FILE;
+        }
+    }
+}
+
+#pragma mark ================ Get Set =================
+- (NSFileManager*)fileManager{
+    if (_fileManager == nil) {
+        _fileManager = [NSFileManager defaultManager];
+    }
+    return _fileManager;
 }
 @end

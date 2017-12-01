@@ -44,9 +44,11 @@ typedef enum _FileType {
  扩展：camera、filmingTime、etc
  */
 
-- (id)initWithBlankObject;
-- (id)initWithFullPath:(NSString*)filePath;
-- (id)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth;
+@property(nonatomic,retain) NSFileManager*  fileManager;
+
+- (instancetype)initWithBlankObject;
+- (instancetype)initWithFullPath:(NSString*)filePath;
+- (instancetype)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth;
 
 - (void)addChildren:(NSArray*)children;
 @end

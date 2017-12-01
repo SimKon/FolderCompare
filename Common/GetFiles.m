@@ -19,7 +19,13 @@
     NSArray* arrTemp = [self getSubFiles:folder NSError:error];
     NSMutableArray *arrNodes = [NSMutableArray new];
     for (int i = 0; i < arrTemp.count; i++) {
-        FileNode *fileNode = [[FileNode alloc] initWithSimpleObject:[arrTemp objectAtIndex:i]  withDepth:depth];
+        NSString* fileName = [arrTemp objectAtIndex:i];
+        // 特定文件跳过（一般是系统生成的隐藏文件）
+        if ([SKIP_FILES containsObject:fileName]) {
+            continue;
+        }
+        // Node生成
+        FileNode *fileNode = [[FileNode alloc] initWithSimpleObject:[folder stringByAppendingPathComponent:fileName] withDepth:depth];
         [arrNodes addObject:fileNode];
     }
     return arrNodes;
@@ -32,27 +38,35 @@ depth 0:root文件夹 1:root文件夹下的文件 2:依次类推。作为对外�
  */
 -(NSArray*)getAllSubFilesInFolder:(FileNode*)root error:(NSError**)error{
     if (root == nil || root.name == nil) {
+        NSLog(@"%s param error",__FUNCTION__);
         return nil;
     }
-    // root下的所有文件
+    
+    if (root.type == FT_FILE) {
+        // root为文件夹
+        return nil;
+    }
+    
+    // 获取root下的所有文件
     NSArray *arrFiles = [self getSubFilesWithFolderName:root.fullPath andDepth:(root.depth+1) error:nil];
+    root.subFilesCount = arrFiles.count;
+    
     for (int i = 0; i < arrFiles.count; i++) {
         FileNode *node = [arrFiles objectAtIndex:i];
-        if (node.extension == FE_NOEXTENSION) {
-            //-- 无后缀名的文件&文件夹 --//
+        if (node.type == FT_FOLDER) {
+            //-- 子文件为文件夹 --//
             NSArray *arrChildrens = [self getAllSubFilesInFolder:node error:nil];
             node.subFiles = arrChildrens;
             node.subFilesCount = (unsigned short)arrChildrens.count;
         } else {
-            //-- 有后缀名的文件 --//
-            
+            //-- 子文件为文件 --//
         }
     }
     return arrFiles;
 }
 
-
 -(void)delResNode{}
+
 #pragma mark ================ Private Funcs =================
 -(NSArray*)getSubFiles:(NSString*)folder NSError:(NSError**)error{
     NSFileManager *manager = [NSFileManager defaultManager];
@@ -62,17 +76,4 @@ depth 0:root文件夹 1:root文件夹下的文件 2:依次类推。作为对外�
     }
     return arrFiles;
 }
-
--(NSArray*)getAllSubFiles:(NSString*)folder NSError:(NSError**)error{
-    return 0;
-}
-
--(BOOL)isDirectory:(NSString*)filePath{
-    BOOL isDirectory = NO;
-    [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory];
-    return isDirectory;
-}
-//-(void)fetchFileInfo:(FileNode*)node withDepth:(int)depth {
-//    
-//}
 @end
