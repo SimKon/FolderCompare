@@ -10,6 +10,13 @@
 
 @interface ViewController : NSViewController
 
+@property (assign) IBOutlet NSView *viewA;
+@property (assign) IBOutlet NSView *viewB;
+@property (assign) IBOutlet NSButton *btnSelectA;
+@property (assign) IBOutlet NSButton *btnSelectB;
+@property (assign) IBOutlet NSButton *btnExportA;
+@property (assign) IBOutlet NSButton *btnExportB;
+@property (assign) IBOutlet NSButton *btnCompare;
 
 @end
 
