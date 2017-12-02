@@ -15,6 +15,7 @@ typedef enum _FCError {
 
 #define NSObjectReleaseToNil(a) \
 do {                            \
+if (a != nil) {             \
 [a release];            \
 a = nil;                \
 }                           \
