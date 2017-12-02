@@ -689,7 +689,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="550" height="250"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MfI-tn-hvD" userLabel="View B">
+                            <customView canDrawConcurrently="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MfI-tn-hvD" userLabel="View B">
                                 <rect key="frame" x="7" y="56" width="537" height="91"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
@@ -729,7 +729,7 @@
                                     </button>
                                 </subviews>
                             </customView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8yn-3L-OqW" userLabel="View A">
+                            <customView canDrawConcurrently="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8yn-3L-OqW" userLabel="View A">
                                 <rect key="frame" x="7" y="149" width="537" height="93"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
@@ -769,10 +769,10 @@
                                     </button>
                                 </subviews>
                             </customView>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zT2-bd-A6S">
+                            <button canDrawConcurrently="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zT2-bd-A6S">
                                 <rect key="frame" x="7" y="7" width="537" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="square" title="Compare" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nFp-v9-blp">
+                                <buttonCell key="cell" type="square" title="Compare" bezelStyle="shadowlessSquare" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nFp-v9-blp">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system" size="21"/>
                                 </buttonCell>

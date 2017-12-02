@@ -11,12 +11,15 @@
 #import "GetFiles.h"
 #import "FileTreeExport.h"
 @implementation ViewController
-- (void)viewWillLoad{
-    [self.viewA.layer setBorderColor:[NSColor redColor].CGColor];
-    [self.viewB.layer setBorderColor:[NSColor whiteColor].CGColor];
+- (void)viewWillAppear{
+    [self.viewA.layer setBackgroundColor:[NSColor redColor].CGColor];
+    [self.viewB.layer setBackgroundColor:[NSColor whiteColor].CGColor];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.viewA.wantsLayer = YES;
+    self.viewB.wantsLayer = YES;
     NSString* path = @"/Users/shen_chao/Desktop/300To2001";//此节点设为根节点
     FileNode *node = [[FileNode alloc] initWithFullPath:path];
     GetFiles* files = [GetFiles new];
