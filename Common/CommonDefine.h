@@ -13,6 +13,14 @@ typedef enum _FCError {
     FC_ERR = 1
 } FCError;
 
+#define NSObjectReleaseToNil(a) \
+do {                            \
+[a release];            \
+a = nil;                \
+}                           \
+} while(false)
+
+
 #define EXPORT_PREFIX_NAME @"FCResult"
 #define EXPORT_SUFFIX_NAME @".txt"
 #define EXPORT_DEPTH_MARK  @"|------ "

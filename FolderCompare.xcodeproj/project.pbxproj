@@ -53,8 +53,8 @@
 		5E2637761FB2E6F600CBCF5E = {
 			isa = PBXGroup;
 			children = (
-				5E3242751FD1460D005C8759 /* Structs */,
 				5E2637961FB2EF3E00CBCF5E /* Common */,
+				5E3242751FD1460D005C8759 /* Structs */,
 				5E2637811FB2E6F600CBCF5E /* FolderCompare */,
 				5E2637801FB2E6F600CBCF5E /* Products */,
 			);

@@ -7,6 +7,7 @@
 //
 
 #import "FileNode.h"
+#import "CommonDefine.h"
 @implementation FileNode
 #pragma mark ==================== Init Functions ======================
 // 返回初始化后的对象
@@ -27,8 +28,13 @@
 // 含有详细信息
 // !! 1.depth会被设置为0   2.效率比initWithSimpleObject慢15000多倍
 - (instancetype)initWithFullPath:(NSString*)filePath {
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+    if (attributes == nil) {
+        // 文件不存在的时候，返回空对象
+        NSLog(@"Error File Not Exist");
+        return [self initWithBlankObject];
+    }
     if ( self = [super init] ) {
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
         self.fileID             = 0;
         self.name               = [filePath lastPathComponent];
         self.fullPath           = filePath;
@@ -47,12 +53,18 @@
 
 // 含有从文件路径上能直接获取的信息 + 文件类型(Folder／File)
 - (instancetype)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth{
+    FileType type = [self getFileType:filePath];
+    if (type == FT_UNKNOW) {
+        // 文件不存在的时候，返回空对象
+        NSLog(@"Error File Not Exitst");
+        return [self initWithBlankObject];
+    }
     if ( self = [super init] ) {
         self.fileID             = 0;
         self.name               = [filePath lastPathComponent];
         self.fullPath           = filePath;
         self.extension          = [self getFileExtension:filePath];
-        self.type               = [self getFileType:filePath];
+        self.type               = type;
         self.subFilesCount      = 0;
         self.subFiles           = nil;
         self.depth              = depth;
@@ -112,17 +124,24 @@
 -(FileType)getFileType:(NSString*)fullPath{
     BOOL isDirectory = NO;
     BOOL isExist = [self.fileManager fileExistsAtPath:fullPath isDirectory:&isDirectory];
-    if (!isExist) {
-        return FT_UNKNOW;
-    } else {
+    if (isExist) {
         if (isDirectory) {
             return FT_FOLDER;
         } else {
             return FT_FILE;
         }
+    } else {
+        return FT_UNKNOW;
     }
 }
-
+-(void)dealloc{
+    self.subFiles = nil;
+    self.name = nil;
+    self.fullPath = nil;
+    self.fileManager = nil;
+    
+    [super dealloc];
+}
 #pragma mark ================ Get Set =================
 - (NSFileManager*)fileManager{
     if (_fileManager == nil) {

@@ -24,7 +24,7 @@ typedef enum _FileExtension {
 } FileExtension;
 
 typedef enum _FileType {
-    FT_UNKNOW,
+    FT_UNKNOW, // 初始化||文件不存在的情况
     FT_FOLDER = 1,
     FT_FILE = 2
 } FileType;

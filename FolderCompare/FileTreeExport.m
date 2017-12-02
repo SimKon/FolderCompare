@@ -112,11 +112,16 @@
     strExp = [[strExp stringByAppendingString:fileNode.name] stringByAppendingString:@"\n"];
     return strExp;
 }
+
+-(void)dealloc{
+    self.exportPath = nil;//会自动释放内存
+    [super dealloc];
+}
 #pragma mark ================ Get Set =================
 -(NSString*)exportPath{
     if (_exportPath == nil) {
         NSString* exportName = [EXPORT_PREFIX_NAME stringByAppendingString:EXPORT_SUFFIX_NAME];
-        _exportPath =  [[NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:exportName];
+        _exportPath =  [[[NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:exportName] retain];
     }
 #warning 为了测试方便，暂时关闭文件名自动叠加功能
 //    _exportPath = [self getExpPathWithTmpPath:_exportPath];
