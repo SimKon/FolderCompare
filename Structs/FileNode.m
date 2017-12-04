@@ -77,6 +77,17 @@
     self.subFilesCount = (unsigned short)children.count;
 }
 
+-(void)releaseNode:(FileNode*)fileNode{
+    if (fileNode.subFilesCount != 0) {
+        for (int i = 0; i < fileNode.subFilesCount ; i++) {
+            FileNode* child = [fileNode.subFiles objectAtIndex:i];
+            // 先释放子节点
+            [self releaseNode:child];
+            // 然后释放自己
+#warning TODO release
+        }
+    }
+}
 #pragma mark ==================== Other Functions ======================
 -(FileExtension)getFileExtension:(NSString*)fileName{
     NSString* fileExtension = [[fileName pathExtension] uppercaseString];
@@ -134,6 +145,11 @@
         return FT_UNKNOW;
     }
 }
+
+-(void)resNodeValue:(FileNode*)node{
+    
+}
+
 -(void)dealloc{
     self.subFiles = nil;
     self.name = nil;

@@ -28,6 +28,7 @@ typedef enum _FileType {
     FT_FOLDER = 1,
     FT_FILE = 2
 } FileType;
+
 @interface FileNode : NSObject
 @property(assign,nonatomic) int             fileID;
 @property(assign,nonatomic) int             extension;

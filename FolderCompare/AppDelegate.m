@@ -14,13 +14,17 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    // Insert code here to initialize your application
+    [NSApp mainWindow].delegate = self;
 }
 
+// 点击close按钮后直接关闭程序
+- (BOOL)windowShouldClose:(id)sender
+{
+    [NSApp terminate:self];
+    return YES;
+}
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
 }
-
-
 @end

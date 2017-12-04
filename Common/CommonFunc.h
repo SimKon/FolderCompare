@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#warning 由Node release引发的NSString的释放问题
+#warning 重新选择目录时候的内存释放和置空问题---》置空问题和error处理有关
 @interface CommonFunc : NSObject
 
 @end
