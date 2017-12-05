@@ -13,14 +13,7 @@
 // 返回初始化后的对象
 - (instancetype)initWithBlankObject {
     if ( self = [super init] ) {
-        self.fileID             = 0;
-        self.name               = nil;
-        self.fullPath           = nil;
-        self.type               = FT_UNKNOW;
-        self.extension          = FE_UNKNOW;
-        self.subFilesCount      = 0;
-        self.subFiles           = nil;
-        self.depth              = -1;
+        [self setNodeBlank:self];
     }
     return self;
 }
@@ -56,7 +49,7 @@
     FileType type = [self getFileType:filePath];
     if (type == FT_UNKNOW) {
         // 文件不存在的时候，返回空对象
-        NSLog(@"Error File Not Exitst");
+        NSLog(@"File Not Exitst : %@",filePath);
         return [self initWithBlankObject];
     }
     if ( self = [super init] ) {
@@ -72,64 +65,81 @@
     return self;
 }
 #pragma mark ==================== Public Functions ======================
+-(void)setBlank {
+    [self setNodeBlank:self];
+}
+
 -(void)addChildren:(NSArray*)children{
     self.subFiles = children;
     self.subFilesCount = (unsigned short)children.count;
 }
 
--(void)releaseNode:(FileNode*)fileNode{
-    if (fileNode.subFilesCount != 0) {
-        for (int i = 0; i < fileNode.subFilesCount ; i++) {
-            FileNode* child = [fileNode.subFiles objectAtIndex:i];
-            // 先释放子节点
-            [self releaseNode:child];
-            // 然后释放自己
-#warning TODO release
+-(void)releaseNode{
+    if (self.subFilesCount != 0) {
+        // 先释放子节点
+        for (int i = 0; i < self.subFilesCount ; i++) {
+            FileNode* child = [self.subFiles objectAtIndex:i];
+            [child releaseNode];
         }
+        // 然后释放自己
+#warning TODO release NSString
+        [self.subFiles release];
     }
 }
 #pragma mark ==================== Other Functions ======================
+-(void)setNodeBlank:(FileNode*)node {
+    node.fileID             = 0;
+    node.name               = nil;
+    node.fullPath           = nil;
+    node.type               = FT_UNKNOW;
+    node.extension          = FE_UNKNOW;
+    node.subFilesCount      = 0;
+    node.subFiles           = nil;
+    node.depth              = -1;
+}
 -(FileExtension)getFileExtension:(NSString*)fileName{
-    NSString* fileExtension = [[fileName pathExtension] uppercaseString];
-    //99
-    if (fileExtension == nil || [fileExtension isEqualToString:@""] ) {
-        return FE_NOEXTENSION;
+    @autoreleasepool {
+        NSString* fileExtension = [[fileName pathExtension] uppercaseString];
+        //99
+        if (fileExtension == nil || [fileExtension isEqualToString:@""] ) {
+            return FE_NOEXTENSION;
+        }
+        //1~9 Picture
+        if ([fileExtension isEqualToString:@"JPG"] ||
+            [fileExtension isEqualToString:@"JPEG"]) {
+            return FE_JPEG;
+        }
+        if ([fileExtension isEqualToString:@"NEF"] || // Nikon
+            [fileExtension isEqualToString:@"RAF"] || // Fujifilm
+            [fileExtension isEqualToString:@"RW2"] || // Panasonic
+            [fileExtension isEqualToString:@"CR2"] || // Canon
+            [fileExtension isEqualToString:@"X3F"] || // Sigma
+            [fileExtension isEqualToString:@"PEF"] || // Pentax
+            [fileExtension isEqualToString:@"ARW"] || // Sony
+            [fileExtension isEqualToString:@"ORF"] || // Olympus
+            [fileExtension isEqualToString:@"DNG"] || // Lecia&Ricoh
+            [fileExtension isEqualToString:@"RAW"]) {
+            return FE_RAW;
+        }
+        if ([fileExtension isEqualToString:@"TIFF"] ) {
+            return FE_TIFF;
+        }
+        //11~19 Movie
+        if ([fileExtension isEqualToString:@"MP4"] ) {
+            return FE_MP4;
+        }
+        if ([fileExtension isEqualToString:@"RMVB"] ) {
+            return FE_RMVB;
+        }
+        //20~40 Document
+        if ([fileExtension isEqualToString:@"DOC"] ) {
+            return FE_DOC;
+        }
+        if ([fileExtension isEqualToString:@"PDF"] ) {
+            return FE_PDF;
+        }
+        return FE_UNKNOW;
     }
-    //1~9 Picture
-    if ([fileExtension isEqualToString:@"JPG"] ||
-        [fileExtension isEqualToString:@"JPEG"]) {
-        return FE_JPEG;
-    }
-    if ([fileExtension isEqualToString:@"NEF"] || // Nikon
-        [fileExtension isEqualToString:@"RAF"] || // Fujifilm
-        [fileExtension isEqualToString:@"RW2"] || // Panasonic
-        [fileExtension isEqualToString:@"CR2"] || // Canon
-        [fileExtension isEqualToString:@"X3F"] || // Sigma
-        [fileExtension isEqualToString:@"PEF"] || // Pentax
-        [fileExtension isEqualToString:@"ARW"] || // Sony
-        [fileExtension isEqualToString:@"ORF"] || // Olympus
-        [fileExtension isEqualToString:@"DNG"] || // Lecia&Ricoh
-        [fileExtension isEqualToString:@"RAW"]) {
-        return FE_RAW;
-    }
-    if ([fileExtension isEqualToString:@"TIFF"] ) {
-        return FE_TIFF;
-    }
-    //11~19 Movie
-    if ([fileExtension isEqualToString:@"MP4"] ) {
-        return FE_MP4;
-    }
-    if ([fileExtension isEqualToString:@"RMVB"] ) {
-        return FE_RMVB;
-    }
-    //20~40 Document
-    if ([fileExtension isEqualToString:@"DOC"] ) {
-        return FE_DOC;
-    }
-    if ([fileExtension isEqualToString:@"PDF"] ) {
-        return FE_PDF;
-    }
-    return FE_UNKNOW;
 }
 
 -(FileType)getFileType:(NSString*)fullPath{

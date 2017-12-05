@@ -51,5 +51,7 @@ typedef enum _FileType {
 - (instancetype)initWithFullPath:(NSString*)filePath;
 - (instancetype)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth;
 
+- (void)setBlank;
 - (void)addChildren:(NSArray*)children;
+- (void)releaseNode;
 @end

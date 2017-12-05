@@ -36,14 +36,6 @@
     [super viewDidLoad];
     self.treeA = nil;
     self.treeB = nil;
-    
-    NSString* path = @"/Users/shen_chao/Desktop/300To2001";//此节点设为根节点
-    FileNode *node = [[FileNode alloc] initWithFullPath:path];
-    GetFiles* files = [GetFiles new];
-    NSArray* arrFiles = [[files getAllSubFilesInFolder:node error:nil] retain];
-    [node addChildren:arrFiles];
-    FileTreeExport *export = [[[FileTreeExport alloc] init] autorelease];
-    [export exportTree:node];
 }
 
 #pragma mark ================ Button Click =================
@@ -52,12 +44,17 @@
     panel.canChooseDirectories = YES;
     panel.canChooseFiles = NO;
     panel.allowsMultipleSelection = NO;
-#warning TODO 如果重新选择路径，则原来的node中的内容需要释放
+    
     [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse result) {
         if (result == NSModalResponseOK) {
             // 获取和设定画面上的路径
             NSString* pathA = [[[panel URLs] objectAtIndex:0] path];
-            self.txfPathA.stringValue = pathA;
+            // 选择路径变更
+            if (![self.txfPathA.stringValue isEqualToString:pathA]) {
+                self.txfPathA.stringValue = pathA;
+                [self.treeA releaseNode];
+                [self.treeA setBlank];
+            }
         }
     }];
 }
@@ -66,7 +63,7 @@
     self.treeA = [[FileNode alloc] initWithFullPath:self.txfPathA.stringValue];
     // 获取所有子节点
     GetFiles* files = [[GetFiles new] autorelease];
-    NSArray* arrFiles = [[files getAllSubFilesInFolder:self.treeA error:nil] retain];
+    NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeA error:nil];
     // 在根节点上添加子节点
     [self.treeA addChildren:arrFiles];
     
@@ -80,12 +77,18 @@
     panel.canChooseDirectories = YES;
     panel.canChooseFiles = NO;
     panel.allowsMultipleSelection = NO;
-#warning TODO 如果重新选择路径，则原来的node中的内容需要释放
+
     [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse result) {
         if (result == NSModalResponseOK) {
             // 获取和设定画面上的路径
             NSString* pathB = [[[panel URLs] objectAtIndex:0] path];
             self.txfPathB.stringValue = pathB;
+            // 选择路径变更
+            if (![self.txfPathB.stringValue isEqualToString:pathB]) {
+                self.txfPathB.stringValue = pathB;
+                [self.treeB releaseNode];
+                [self.treeB setBlank];
+            }
         }
     }];
 }
@@ -94,7 +97,7 @@
     self.treeB = [[FileNode alloc] initWithFullPath:self.txfPathB.stringValue];
     // 获取所有子节点
     GetFiles* files = [[GetFiles new] autorelease];
-    NSArray* arrFiles = [[files getAllSubFilesInFolder:self.treeB error:nil] retain];
+    NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeB error:nil];
     // 在根节点上添加子节点
     [self.treeB addChildren:arrFiles];
     

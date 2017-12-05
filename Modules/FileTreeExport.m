@@ -48,45 +48,52 @@
 
 // eg: "|------ |------ |------ ippac.h"
 -(void)exportNode:(FileNode*)fileNode Handle:(NSFileHandle*)handle{
-    if (fileNode.subFilesCount != 0) {
-        // 1.文件夹本身的信息写入文件
-        NSString* expString = [self getExportStringFrom:fileNode];
-        [handle seekToEndOfFile];
-        NSData *buffer = [expString dataUsingEncoding:NSUTF8StringEncoding];
-        [handle writeData:buffer];
-        // 2.文件夹下的文件信息递归写入文件
-        NSArray* children = fileNode.subFiles;
-        for (int i = 0; i < fileNode.subFilesCount; i++) {
-            FileNode* node = [children objectAtIndex:i];
-            [self exportNode:node Handle:handle];
+    @autoreleasepool {
+        if (fileNode.subFilesCount != 0) {
+            // 1.文件夹本身的信息写入文件
+            NSString* expString = [self getExportStringFrom:fileNode];
+            if (expString == nil) {
+                return;
+            }
+            [handle seekToEndOfFile];
+            NSData *buffer = [expString dataUsingEncoding:NSUTF8StringEncoding];
+            [handle writeData:buffer];
+            // 2.文件夹下的文件信息递归写入文件
+            NSArray* children = fileNode.subFiles;
+            for (int i = 0; i < fileNode.subFilesCount; i++) {
+                FileNode* node = [children objectAtIndex:i];
+                [self exportNode:node Handle:handle];
+            }
+        } else {
+            // 将文件信息写入文件
+            NSString* expString = [self getExportStringFrom:fileNode];
+            [handle seekToEndOfFile];
+            NSData *buffer = [expString dataUsingEncoding:NSUTF8StringEncoding];
+            [handle writeData:buffer];
         }
-    } else {
-        // 将文件信息写入文件
-        NSString* expString = [self getExportStringFrom:fileNode];
-        [handle seekToEndOfFile];
-        NSData *buffer = [expString dataUsingEncoding:NSUTF8StringEncoding];
-        [handle writeData:buffer];
     }
 }
 
 // eg: "/Users/shen_chao/Desktop/300To200/IPP_dlib_MiniDriver/Inc/ippcv.h"
 -(void)exportNode2:(FileNode*)fileNode Handle:(NSFileHandle*)handle{
-    if (fileNode.subFilesCount != 0) {
-        // 1.文件夹本身的信息写入文件
-        [handle seekToEndOfFile];
-        NSData *buffer = [[fileNode.fullPath stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
-        [handle writeData:buffer];
-        // 2.文件夹下的文件信息递归写入文件
-        NSArray* children = fileNode.subFiles;
-        for (int i = 0; i < fileNode.subFilesCount; i++) {
-            FileNode* node = [children objectAtIndex:i];
-            [self exportNode2:node Handle:handle];
+    @autoreleasepool {
+        if (fileNode.subFilesCount != 0) {
+            // 1.文件夹本身的信息写入文件
+            [handle seekToEndOfFile];
+            NSData *buffer = [[fileNode.fullPath stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
+            [handle writeData:buffer];
+            // 2.文件夹下的文件信息递归写入文件
+            NSArray* children = fileNode.subFiles;
+            for (int i = 0; i < fileNode.subFilesCount; i++) {
+                FileNode* node = [children objectAtIndex:i];
+                [self exportNode2:node Handle:handle];
+            }
+        } else {
+            // 将文件信息写入文件
+            [handle seekToEndOfFile];
+            NSData *buffer = [[fileNode.fullPath stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
+            [handle writeData:buffer];
         }
-    } else {
-        // 将文件信息写入文件
-        [handle seekToEndOfFile];
-        NSData *buffer = [[fileNode.fullPath stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
-        [handle writeData:buffer];
     }
 }
 
@@ -105,6 +112,10 @@
 }
 
 -(NSString*)getExportStringFrom:(FileNode*)fileNode{
+    // 参数检查
+    if (fileNode == nil || fileNode.name == nil) {
+        return nil;
+    }
     NSString* strExp = @"";
     for (int i = 0; i < fileNode.depth; i++) {
         strExp = [strExp stringByAppendingString:EXPORT_DEPTH_MARK];

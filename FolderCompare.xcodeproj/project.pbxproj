@@ -16,6 +16,7 @@
 		5E2637A61FB2FFEA00CBCF5E /* GetFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E2637A51FB2FFEA00CBCF5E /* GetFiles.m */; };
 		5E3242661FCEA6C2005C8759 /* FileNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E3242651FCEA6C2005C8759 /* FileNode.m */; };
 		5E3242741FD0DE8A005C8759 /* FileTreeExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E3242731FD0DE8A005C8759 /* FileTreeExport.m */; };
+		5E8F814D1FD63D6000FB4DC3 /* LogHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8F814C1FD63D6000FB4DC3 /* LogHandler.m */; };
 		5EADAF8E1FD2897A00724A70 /* CompareFileTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EADAF8D1FD2897A00724A70 /* CompareFileTree.m */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,8 @@
 		5E3242651FCEA6C2005C8759 /* FileNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileNode.m; sourceTree = "<group>"; };
 		5E3242721FD0DE8A005C8759 /* FileTreeExport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTreeExport.h; sourceTree = "<group>"; };
 		5E3242731FD0DE8A005C8759 /* FileTreeExport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileTreeExport.m; sourceTree = "<group>"; };
+		5E8F814B1FD63D6000FB4DC3 /* LogHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogHandler.h; sourceTree = "<group>"; };
+		5E8F814C1FD63D6000FB4DC3 /* LogHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogHandler.m; sourceTree = "<group>"; };
 		5EADAF8C1FD2897A00724A70 /* CompareFileTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompareFileTree.h; sourceTree = "<group>"; };
 		5EADAF8D1FD2897A00724A70 /* CompareFileTree.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompareFileTree.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,6 +126,8 @@
 				5E3242731FD0DE8A005C8759 /* FileTreeExport.m */,
 				5EADAF8C1FD2897A00724A70 /* CompareFileTree.h */,
 				5EADAF8D1FD2897A00724A70 /* CompareFileTree.m */,
+				5E8F814B1FD63D6000FB4DC3 /* LogHandler.h */,
+				5E8F814C1FD63D6000FB4DC3 /* LogHandler.m */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -202,6 +207,7 @@
 				5E2637A61FB2FFEA00CBCF5E /* GetFiles.m in Sources */,
 				5EADAF8E1FD2897A00724A70 /* CompareFileTree.m in Sources */,
 				5E26378A1FB2E6F600CBCF5E /* ViewController.m in Sources */,
+				5E8F814D1FD63D6000FB4DC3 /* LogHandler.m in Sources */,
 				5E3242661FCEA6C2005C8759 /* FileNode.m in Sources */,
 				5E2637871FB2E6F600CBCF5E /* main.m in Sources */,
 				5E2637841FB2E6F600CBCF5E /* AppDelegate.m in Sources */,
