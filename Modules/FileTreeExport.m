@@ -36,7 +36,7 @@
     //找到并定位到outFile的末尾位置(在此后追加文件),这一步只是异常防止，实际上由于是新建的文件，文件末尾和文件头是同一个地方
     [fileHandle seekToEndOfFile];
     
-    NSString *bs = [NSString stringWithFormat:@"Root Folder = \"%@\"\n\n",tree.fullPath];
+    NSString *bs = [NSString stringWithFormat:@"Root Folder = \"%@\"\n\n",[CommonFunc getFullPath:tree]];
     NSData *buffer = [bs dataUsingEncoding:NSUTF8StringEncoding];
     [fileHandle writeData:buffer];
     
@@ -80,7 +80,7 @@
         if (fileNode.subFilesCount != 0) {
             // 1.文件夹本身的信息写入文件
             [handle seekToEndOfFile];
-            NSData *buffer = [[fileNode.fullPath stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *buffer = [[[CommonFunc getFullPath:fileNode] stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
             [handle writeData:buffer];
             // 2.文件夹下的文件信息递归写入文件
             NSArray* children = fileNode.subFiles;
@@ -91,7 +91,7 @@
         } else {
             // 将文件信息写入文件
             [handle seekToEndOfFile];
-            NSData *buffer = [[fileNode.fullPath stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *buffer = [[[CommonFunc getFullPath:fileNode] stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
             [handle writeData:buffer];
         }
     }

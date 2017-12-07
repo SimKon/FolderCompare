@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CommonDefine.h"
+#import "CommonFunc.h"
 typedef enum _FileExtension {
     FE_UNKNOW= 0,
     //1~9 Picture
@@ -32,21 +34,19 @@ typedef enum _FileType {
 @interface FileNode : NSObject
 @property(assign,nonatomic) int             fileID;
 @property(assign,nonatomic) int             extension;
-@property(retain,nonatomic) NSString*       name; // 文件名
-@property(retain,nonatomic) NSString*       fullPath; // 文件全路径
+@property(assign,nonatomic) NSString*       name; // 文件名
+//@property(retain,nonatomic) NSString*       fullPath; // 文件全路径
 @property(assign,nonatomic) int             type;
-@property(assign,nonatomic) unsigned short  subFilesCount;
+@property(assign,nonatomic) USHORT          subFilesCount;
 @property(retain,nonatomic) NSArray*        subFiles;
 @property(assign,nonatomic) int             depth;
+@property(retain,nonatomic) FileNode*       father; // 这个指针指向的内容并非深复制过来的，释放时只要释放指针本身就可以了
 /* 等待追加
  @property(assign,nonatomic) int         size;
  */
 /*
  扩展：camera、filmingTime、etc
  */
-
-@property(nonatomic,retain) NSFileManager*  fileManager;
-
 - (instancetype)initWithBlankObject;
 - (instancetype)initWithFullPath:(NSString*)filePath;
 - (instancetype)initWithSimpleObject:(NSString*)filePath withDepth:(int)depth;

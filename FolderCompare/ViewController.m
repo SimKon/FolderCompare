@@ -10,6 +10,9 @@
 #import "CommonFunc.h"
 #import "GetFiles.h"
 #import "FileTreeExport.h"
+
+static NSString* prefixPathA = nil;
+static NSString* prefixPathB = nil;
 @implementation ViewController
 - (void)viewWillAppear{
     // ViewA and SubViews
@@ -36,6 +39,7 @@
     [super viewDidLoad];
     self.treeA = nil;
     self.treeB = nil;
+    self.txfPathA.stringValue = @"/Users/shen_chao/Desktop/300To2001";
 }
 
 #pragma mark ================ Button Click =================
@@ -63,9 +67,12 @@
     self.treeA = [[FileNode alloc] initWithFullPath:self.txfPathA.stringValue];
     // 获取所有子节点
     GetFiles* files = [[GetFiles new] autorelease];
-    NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeA error:nil];
+    NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeA PrefixPath:[self.txfPathA.stringValue stringByDeletingLastPathComponent] error:nil];
     // 在根节点上添加子节点
     [self.treeA addChildren:arrFiles];
+    
+    // 静态变量记录根节点在硬盘上的路径
+    prefixPathA = [self.txfPathA.stringValue stringByDeletingLastPathComponent];
     
     // 生成txt文件
     FileTreeExport *export = [[FileTreeExport new] autorelease];
@@ -96,10 +103,13 @@
     // 获取根节点的FileNode对象
     self.treeB = [[FileNode alloc] initWithFullPath:self.txfPathB.stringValue];
     // 获取所有子节点
-    GetFiles* files = [[GetFiles new] autorelease];
-    NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeB error:nil];
+    GetFiles* files = [[[GetFiles alloc] init] autorelease];
+    NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeB PrefixPath:[self.txfPathB.stringValue stringByDeletingLastPathComponent] error:nil];
     // 在根节点上添加子节点
     [self.treeB addChildren:arrFiles];
+    
+    // 静态变量记录根节点在硬盘上的路径
+    prefixPathB = [self.txfPathB.stringValue stringByDeletingLastPathComponent];
     
     // 生成txt文件
     FileTreeExport *export = [[FileTreeExport new] autorelease];
@@ -112,5 +122,12 @@
     // Update the view, if already loaded.
 }
 
-
+- (void)dealloc{
+    [self.treeA releaseNode];
+    self.treeA = nil;
+    [self.treeB releaseNode];
+    self.treeB = nil;
+    
+    [super dealloc];
+}
 @end

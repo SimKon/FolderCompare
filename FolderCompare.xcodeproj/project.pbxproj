@@ -41,6 +41,7 @@
 		5E3242731FD0DE8A005C8759 /* FileTreeExport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileTreeExport.m; sourceTree = "<group>"; };
 		5E8F814B1FD63D6000FB4DC3 /* LogHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogHandler.h; sourceTree = "<group>"; };
 		5E8F814C1FD63D6000FB4DC3 /* LogHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogHandler.m; sourceTree = "<group>"; };
+		5E8F81611FD7EC9000FB4DC3 /* Description.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Description.h; sourceTree = "<group>"; };
 		5EADAF8C1FD2897A00724A70 /* CompareFileTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompareFileTree.h; sourceTree = "<group>"; };
 		5EADAF8D1FD2897A00724A70 /* CompareFileTree.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompareFileTree.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,6 +102,7 @@
 		5E2637961FB2EF3E00CBCF5E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				5E8F81611FD7EC9000FB4DC3 /* Description.h */,
 				5E26379B1FB2F66900CBCF5E /* CommonDefine.h */,
 				5E26379C1FB2F66900CBCF5E /* CommonFunc.h */,
 				5E26379D1FB2F66900CBCF5E /* CommonFunc.m */,

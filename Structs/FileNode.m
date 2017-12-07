@@ -7,7 +7,6 @@
 //
 
 #import "FileNode.h"
-#import "CommonDefine.h"
 @implementation FileNode
 #pragma mark ==================== Init Functions ======================
 // 返回初始化后的对象
@@ -18,8 +17,10 @@
     return self;
 }
 
-// 含有详细信息
-// !! 1.depth会被设置为0   2.效率比initWithSimpleObject慢15000多倍
+// 含有详细信息，一般用作创建选取的文件夹的对象
+// !! 1.depth会被设置为0
+// !! 2.name属性是全路径
+// !! 3.效率比initWithSimpleObject慢15000多倍
 - (instancetype)initWithFullPath:(NSString*)filePath {
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
     if (attributes == nil) {
@@ -29,8 +30,7 @@
     }
     if ( self = [super init] ) {
         self.fileID             = 0;
-        self.name               = [filePath lastPathComponent];
-        self.fullPath           = filePath;
+        self.name               = [[NSString alloc] initWithString:[filePath lastPathComponent]];
         if ([[attributes valueForKey:NSFileType] isEqualToString:NSFileTypeDirectory]) {
             self.type           = FT_FOLDER;
         } else {
@@ -40,6 +40,7 @@
         self.subFilesCount      = 0;
         self.subFiles           = nil;
         self.depth              = 0;
+        self.father             = nil;
     }
     return self;
 }
@@ -54,13 +55,13 @@
     }
     if ( self = [super init] ) {
         self.fileID             = 0;
-        self.name               = [filePath lastPathComponent];
-        self.fullPath           = filePath;
+        self.name               = [[NSString alloc] initWithString:[filePath lastPathComponent]];
         self.extension          = [self getFileExtension:filePath];
         self.type               = type;
         self.subFilesCount      = 0;
         self.subFiles           = nil;
         self.depth              = depth;
+        self.father             = nil;
     }
     return self;
 }
@@ -71,7 +72,7 @@
 
 -(void)addChildren:(NSArray*)children{
     self.subFiles = children;
-    self.subFilesCount = (unsigned short)children.count;
+    self.subFilesCount = (USHORT)children.count;
 }
 
 -(void)releaseNode{
@@ -86,16 +87,18 @@
         [self.subFiles release];
     }
 }
+
+//-(NSString*)
 #pragma mark ==================== Other Functions ======================
 -(void)setNodeBlank:(FileNode*)node {
     node.fileID             = 0;
     node.name               = nil;
-    node.fullPath           = nil;
     node.type               = FT_UNKNOW;
     node.extension          = FE_UNKNOW;
     node.subFilesCount      = 0;
     node.subFiles           = nil;
     node.depth              = -1;
+    self.father             = nil;
 }
 -(FileExtension)getFileExtension:(NSString*)fileName{
     @autoreleasepool {
@@ -144,7 +147,7 @@
 
 -(FileType)getFileType:(NSString*)fullPath{
     BOOL isDirectory = NO;
-    BOOL isExist = [self.fileManager fileExistsAtPath:fullPath isDirectory:&isDirectory];
+    BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:fullPath isDirectory:&isDirectory];
     if (isExist) {
         if (isDirectory) {
             return FT_FOLDER;
@@ -156,23 +159,11 @@
     }
 }
 
--(void)resNodeValue:(FileNode*)node{
-    
-}
-
 -(void)dealloc{
     self.subFiles = nil;
-    self.name = nil;
-    self.fullPath = nil;
-    self.fileManager = nil;
-    
+#warning self.name的处理
+    self.name  = nil;
+    self.father = nil;
     [super dealloc];
-}
-#pragma mark ================ Get Set =================
-- (NSFileManager*)fileManager{
-    if (_fileManager == nil) {
-        _fileManager = [NSFileManager defaultManager];
-    }
-    return _fileManager;
 }
 @end

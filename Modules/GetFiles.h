@@ -10,8 +10,7 @@
 #import "FileNode.h"
 @interface GetFiles : NSObject
 @property(nonatomic,retain) NSFileManager* fileManager;
-//-(NSArray*)getSubFilesInFolder:(NSString*)folder WithDepth:(int)depth NSError:(NSError**)error;
--(NSArray*)getAllSubFilesInFolder:(FileNode*)root error:(NSError**)error;
+-(NSArray*)getAllSubFilesInFolder:(FileNode*)root PrefixPath:(NSString*)prePath error:(NSError**)error;
 
 //-(NSArray*)getSubFiles:(NSString*)folder NSError:(NSError**)error;
 //-(NSArray*)getAllSubFiles:(NSString*)folder NSError:(NSError**)error;

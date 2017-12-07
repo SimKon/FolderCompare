@@ -21,6 +21,8 @@ a = nil;                \
 }                           \
 } while(false)
 
+#define USHORT  unsigned short
+#define WCHAR   wchar_t*
 
 #define EXPORT_PREFIX_NAME @"FCResult"
 #define EXPORT_SUFFIX_NAME @".txt"
