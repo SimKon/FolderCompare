@@ -18,32 +18,34 @@
  @return Null：没有文件 NSArray：指定路径下的文件,由外部释放
  */
 -(NSArray*)getAllSubFilesInFolder:(FileNode*)root PrefixPath:(NSString*)prePath error:(NSError**)error{
-    if (root == nil || root.name == nil || prePath == nil) {
-        NSLog(@"%s param error",__FUNCTION__);
-        return nil;
-    }
-    if (root.type == FT_FILE) {
-        // root为文件
-        return nil;
-    }
-    
-    // 获取root下的所有文件（arrFiles retianCoutn = 1，所以函数外部需要释放）
-    NSArray *arrFiles = [self getSubFilesWithFolderName:[prePath stringByAppendingPathComponent:root.name] Father:(FileNode*)root Depth:(root.depth+1) error:nil];
-    root.subFilesCount = arrFiles.count;
-    
-    // 遍历root下的文件，是文件夹就递归获取更深层的文件信息
-    for (int i = 0; i < arrFiles.count; i++) {
-        FileNode *node = [arrFiles objectAtIndex:i];
-        if (node.type == FT_FOLDER) {
-            //-- 子文件为文件夹 --//
-            NSArray *arrChildren = [self getAllSubFilesInFolder:node PrefixPath:[prePath stringByAppendingPathComponent:root.name] error:nil];
-            node.subFiles = arrChildren;
-            node.subFilesCount = (USHORT)arrChildren.count;
-        } else {
-            //-- 子文件为文件 --//
+    @autoreleasepool {
+        if (root == nil || root.name == nil || prePath == nil) {
+            NSLog(@"%s param error",__FUNCTION__);
+            return nil;
         }
+        if (root.type == FT_FILE) {
+            // root为文件
+            return nil;
+        }
+        NSString* fullPath = [prePath stringByAppendingPathComponent:root.name];
+        // 获取root下的所有文件（arrFiles retianCoutn = 1，所以函数外部需要释放）
+        NSArray *arrFiles = [self getSubFilesWithFolderName:fullPath Father:(FileNode*)root Depth:(root.depth+1) error:nil];
+        root.subFilesCount = arrFiles.count;
+        
+        // 遍历root下的文件，是文件夹就递归获取更深层的文件信息
+        for (int i = 0; i < arrFiles.count; i++) {
+            FileNode *node = [arrFiles objectAtIndex:i];
+            if (node.type == FT_FOLDER) {
+                //-- 子文件为文件夹 --//
+                NSArray *arrChildren = [self getAllSubFilesInFolder:node PrefixPath:fullPath error:nil];
+                node.subFiles = arrChildren;
+                node.subFilesCount = (USHORT)arrChildren.count;
+            } else {
+                //-- 子文件为文件 --//
+            }
+        }
+        return arrFiles;
     }
-    return arrFiles;
 }
 
 -(NSArray*)sortChildrenByName:(NSArray*)children{
