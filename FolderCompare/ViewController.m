@@ -63,20 +63,37 @@ static NSString* prefixPathB = nil;
     }];
 }
 - (IBAction)clickExportA:(id)sender {
-    // 获取根节点的FileNode对象
-    self.treeA = [[FileNode alloc] initWithFullPath:self.txfPathA.stringValue];
-    // 获取所有子节点
-    GetFiles* files = [[GetFiles new] autorelease];
-    NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeA PrefixPath:[self.txfPathA.stringValue stringByDeletingLastPathComponent] error:nil];
-    // 在根节点上添加子节点
-    [self.treeA addChildren:arrFiles];
+    NSString* pathA = self.txfPathA.stringValue;
+    dispatch_queue_t queue = dispatch_queue_create("ExportTreeA", DISPATCH_QUEUE_PRIORITY_DEFAULT);
+    dispatch_async(queue,^{
+        // 获取根节点的FileNode对象
+        self.treeA = [[FileNode alloc] initWithFullPath:pathA];
+        // 获取所有子节点
+        GetFiles* files = [[GetFiles new] autorelease];
+        NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeA PrefixPath:[pathA stringByDeletingLastPathComponent] error:nil];
+        // 在根节点上添加子节点
+        [self.treeA addChildren:arrFiles];
+        
+        // 静态变量记录根节点在硬盘上的路径
+        prefixPathA = [pathA stringByDeletingLastPathComponent];
+        
+        // 生成txt文件
+        FileTreeExport *export = [[FileTreeExport new] autorelease];
+        [export exportTree:self.treeA];
+        
+        // 画面恢复响应
+        dispatch_queue_t mainQueue = dispatch_get_main_queue();
+        dispatch_sync(mainQueue, ^{
+            self.btnSelectA.enabled = YES;
+            self.btnExportA.enabled = YES;
+            self.txfPathA.editable = YES;
+        });
+    });
     
-    // 静态变量记录根节点在硬盘上的路径
-    prefixPathA = [self.txfPathA.stringValue stringByDeletingLastPathComponent];
-    
-    // 生成txt文件
-    FileTreeExport *export = [[FileTreeExport new] autorelease];
-    [export exportTree:self.treeA];
+    // 画面设置不响应
+    self.btnSelectA.enabled = NO;
+    self.btnExportA.enabled = NO;
+    self.txfPathA.editable = NO;
 }
 
 - (IBAction)clickSelectB:(id)sender {
@@ -100,20 +117,37 @@ static NSString* prefixPathB = nil;
     }];
 }
 - (IBAction)clickExportB:(id)sender {
-    // 获取根节点的FileNode对象
-    self.treeB = [[FileNode alloc] initWithFullPath:self.txfPathB.stringValue];
-    // 获取所有子节点
-    GetFiles* files = [[[GetFiles alloc] init] autorelease];
-    NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeB PrefixPath:[self.txfPathB.stringValue stringByDeletingLastPathComponent] error:nil];
-    // 在根节点上添加子节点
-    [self.treeB addChildren:arrFiles];
+    NSString *pathB = self.txfPathB.stringValue;
+    dispatch_queue_t queue = dispatch_queue_create("ExportTreeB", DISPATCH_QUEUE_PRIORITY_DEFAULT);
+    dispatch_async(queue,^{
+        // 获取根节点的FileNode对象
+        self.treeB = [[FileNode alloc] initWithFullPath:pathB];
+        // 获取所有子节点
+        GetFiles* files = [[[GetFiles alloc] init] autorelease];
+        NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeB PrefixPath:[pathB stringByDeletingLastPathComponent] error:nil];
+        // 在根节点上添加子节点
+        [self.treeB addChildren:arrFiles];
+        
+        // 静态变量记录根节点在硬盘上的路径
+        prefixPathB = [pathB stringByDeletingLastPathComponent];
+        
+        // 生成txt文件
+        FileTreeExport *export = [[FileTreeExport new] autorelease];
+        [export exportTree:self.treeB];
+        
+        // 画面恢复响应
+        dispatch_queue_t mainQueue = dispatch_get_main_queue();
+        dispatch_sync(mainQueue, ^{
+            self.btnSelectB.enabled = YES;
+            self.btnExportB.enabled = YES;
+            self.txfPathB.editable = YES;
+        });
+    });
     
-    // 静态变量记录根节点在硬盘上的路径
-    prefixPathB = [self.txfPathB.stringValue stringByDeletingLastPathComponent];
-    
-    // 生成txt文件
-    FileTreeExport *export = [[FileTreeExport new] autorelease];
-    [export exportTree:self.treeB];
+    // 画面设置不响应
+    self.btnSelectB.enabled = NO;
+    self.btnExportB.enabled = NO;
+    self.txfPathB.editable = NO;
 }
 
 - (void)setRepresentedObject:(id)representedObject {

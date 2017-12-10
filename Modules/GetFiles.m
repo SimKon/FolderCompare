@@ -137,7 +137,7 @@
 }
 -(NSFileManager*)fileManager {
     if (_fileManager == nil) {
-        _fileManager = [NSFileManager defaultManager];
+        _fileManager = [[NSFileManager defaultManager] retain];
     }
     return _fileManager;
 }
