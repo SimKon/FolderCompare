@@ -86,6 +86,11 @@
                 }
                 // Node生成
                 FileNode *fileNode = [[FileNode alloc] initWithSimpleObject:[folder stringByAppendingPathComponent:fileName] withDepth:depth];
+                if (fileNode.name == nil) {
+                    // 文件不存在
+                    [fileNode release];
+                    continue;
+                }
                 fileNode.father = father;
                 [arrNodes addObject:fileNode];
             }

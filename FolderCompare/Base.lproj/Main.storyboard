@@ -770,6 +770,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system" size="21"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="clickCompare:" target="XfG-lQ-9wD" id="JRy-cv-DRv"/>
+                                </connections>
                             </button>
                         </subviews>
                     </view>

@@ -10,6 +10,7 @@
 #import "CommonFunc.h"
 #import "GetFiles.h"
 #import "FileTreeExport.h"
+#import "CompareFileTree.h"
 
 static NSString* prefixPathA = nil;
 static NSString* prefixPathB = nil;
@@ -63,20 +64,13 @@ static NSString* prefixPathB = nil;
     }];
 }
 - (IBAction)clickExportA:(id)sender {
-    NSString* pathA = self.txfPathA.stringValue;
+    // 获取文件夹内容
+    if (self.treeA == nil) {
+        [self getFilesInPathA];
+    }
+    
     dispatch_queue_t queue = dispatch_queue_create("ExportTreeA", DISPATCH_QUEUE_PRIORITY_DEFAULT);
     dispatch_async(queue,^{
-        // 获取根节点的FileNode对象
-        self.treeA = [[FileNode alloc] initWithFullPath:pathA];
-        // 获取所有子节点
-        GetFiles* files = [[GetFiles new] autorelease];
-        NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeA PrefixPath:[pathA stringByDeletingLastPathComponent] error:nil];
-        // 在根节点上添加子节点
-        [self.treeA addChildren:arrFiles];
-        
-        // 静态变量记录根节点在硬盘上的路径
-        prefixPathA = [pathA stringByDeletingLastPathComponent];
-        
         // 生成txt文件
         FileTreeExport *export = [[FileTreeExport new] autorelease];
         [export exportTree:self.treeA];
@@ -117,20 +111,13 @@ static NSString* prefixPathB = nil;
     }];
 }
 - (IBAction)clickExportB:(id)sender {
-    NSString *pathB = self.txfPathB.stringValue;
+    // 获取文件夹内容
+    if (self.treeB == nil) {
+        [self getFilesInPathB];
+    }
+    
     dispatch_queue_t queue = dispatch_queue_create("ExportTreeB", DISPATCH_QUEUE_PRIORITY_DEFAULT);
     dispatch_async(queue,^{
-        // 获取根节点的FileNode对象
-        self.treeB = [[FileNode alloc] initWithFullPath:pathB];
-        // 获取所有子节点
-        GetFiles* files = [[[GetFiles alloc] init] autorelease];
-        NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeB PrefixPath:[pathB stringByDeletingLastPathComponent] error:nil];
-        // 在根节点上添加子节点
-        [self.treeB addChildren:arrFiles];
-        
-        // 静态变量记录根节点在硬盘上的路径
-        prefixPathB = [pathB stringByDeletingLastPathComponent];
-        
         // 生成txt文件
         FileTreeExport *export = [[FileTreeExport new] autorelease];
         [export exportTree:self.treeB];
@@ -150,6 +137,23 @@ static NSString* prefixPathB = nil;
     self.txfPathB.editable = NO;
 }
 
+- (IBAction)clickCompare:(id)sender {
+    CompareFileTree *compareFunc = [CompareFileTree new];
+#warning 用NULL判断还是用空来判断有待验证
+    if (self.treeA == NULL) {
+        [self getFilesInPathA];
+    }
+    if (self.treeB == NULL) {
+        [self getFilesInPathB];
+    }
+    BOOL diff = [compareFunc compareTree:self.treeA with:self.treeB];
+    if (diff == YES) {
+        // 说明两个文件夹中文件有不同，需要显示Message
+        // TODO
+    }
+    [compareFunc release];
+}
+
 - (void)setRepresentedObject:(id)representedObject {
     [super setRepresentedObject:representedObject];
 
@@ -163,5 +167,57 @@ static NSString* prefixPathB = nil;
     self.treeB = nil;
     
     [super dealloc];
+}
+
+- (void)getFilesInPathA{
+    __block NSString* pathA = nil;
+    if ([NSThread isMainThread]) {
+        pathA = self.txfPathA.stringValue;
+    } else {
+        // sync可以保证在主线程中的代码执行完成之后再去做后面的动作
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            pathA = self.txfPathA.stringValue;
+        });
+    }
+    
+    dispatch_queue_t queue = dispatch_queue_create("GetFilesInPathA", DISPATCH_QUEUE_PRIORITY_DEFAULT);
+    dispatch_sync(queue,^{
+        // 获取根节点的FileNode对象
+        self.treeA = [[FileNode alloc] initWithFullPath:pathA];
+        // 获取所有子节点
+        GetFiles* files = [[GetFiles new] autorelease];
+        NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeA PrefixPath:[pathA stringByDeletingLastPathComponent] error:nil];
+        // 在根节点上添加子节点
+        [self.treeA addChildren:arrFiles];
+        
+        // 静态变量记录根节点在硬盘上的路径
+        prefixPathA = [pathA stringByDeletingLastPathComponent];
+    });
+}
+
+- (void)getFilesInPathB{
+    __block NSString *pathB = nil;
+    if ([NSThread isMainThread]) {
+        pathB = self.txfPathB.stringValue;
+    } else {
+        // sync可以保证在主线程中的代码执行完成之后再去做后面的动作
+        dispatch_sync(dispatch_get_main_queue(), ^{
+        });
+    }
+    
+    dispatch_queue_t queue = dispatch_queue_create("GetFilesInPathB", DISPATCH_QUEUE_PRIORITY_DEFAULT);
+    dispatch_sync(queue,^{
+        
+        // 获取根节点的FileNode对象
+        self.treeB = [[FileNode alloc] initWithFullPath:pathB];
+        // 获取所有子节点
+        GetFiles* files = [[[GetFiles alloc] init] autorelease];
+        NSArray* arrFiles = [files getAllSubFilesInFolder:self.treeB PrefixPath:[pathB stringByDeletingLastPathComponent] error:nil];
+        // 在根节点上添加子节点
+        [self.treeB addChildren:arrFiles];
+        
+        // 静态变量记录根节点在硬盘上的路径
+        prefixPathB = [pathB stringByDeletingLastPathComponent];
+    });
 }
 @end

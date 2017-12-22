@@ -13,6 +13,11 @@ typedef enum _FCError {
     FC_ERR = 1
 } FCError;
 
+typedef enum _FCTree {
+    FC_TreeA = 0,
+    FC_TreeB = 1
+} FCTree;
+
 #define NSObjectReleaseToNil(a) \
 do {                            \
 if (a != nil) {             \
@@ -27,6 +32,9 @@ a = nil;                \
 #define EXPORT_PREFIX_NAME @"FCResult"
 #define EXPORT_SUFFIX_NAME @".txt"
 #define EXPORT_DEPTH_MARK  @"|------ "
+#define DIFF_PREFIX_NAME @"DiffResult"
+#define DIFF_SUFFIX_NAME @".csv"
+
 // ----------- Skip Files -------------
 //#define SKIP_DS_Store = @".DS_Store"
 #define SKIP_FILES [NSArray arrayWithObjects:@".DS_Store", nil]

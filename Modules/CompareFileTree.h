@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@interface CompareFileTree : NSObject
-
+#import "FileNode.h"
+@interface CompareFileTree : NSObject {
+    NSString *_exportPath;
+    NSFileHandle *_fileHandler;
+    FileNode *_treeA;
+    FileNode *_treeB;
+}
+-(BOOL)compareTree:(FileNode*)treeA with:(FileNode*)treeB;
 @end

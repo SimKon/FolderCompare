@@ -26,6 +26,10 @@
 //In the object of FileNode, only save the FileName. So if you want to get a node's full Path, you shoud call "getFullPath" function.
 //当递归文件夹获取子文件的时候，路径的获取方法是当层路径的拼上子文件名。
 
+/***** FileNode initWithSimpleObject 文件不存在的情况*****/
+// 一般来说，使用OC函数取出来的文件夹下的所有文件名，然后对每个文件进行是否存在的判断的时候是不会报这个错的
+// 但是以下情况会报出来：
+// 文件为硬盘上某个文件的替身，而这个替身的原身已经被删除了。
 
 /***** Bug *****/
 //1. 选中路径以后，先点compare，分析一遍。然后再点一次export，又会分析一遍。修改方法是设置一个判断该根文件夹是否被分析过的标签。如果路径没变并且已经被分析过了，那么直接用内存中的。
